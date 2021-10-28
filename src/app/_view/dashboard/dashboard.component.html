@@ -52,7 +52,7 @@
             <th style="text-align: center">სახელი</th>
             <th style="text-align: center">რაოდენობა</th>
             <th style="text-align: center">ფასი</th>
-            <th width="50"></th>
+            <th width="100"></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-product>
@@ -64,7 +64,11 @@
             <td style="text-align: center">{{product.quantity}}</td>
             <td style="text-align: center">{{product.price}}</td>
             <td>
-                <p-button icon="pi pi-eye" (click)="openProductMoodal(product)"></p-button>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-warning" style="margin-left: 3px;"
+                        *ngIf="product.userId==user.id"
+                        (click)="openProductMoodal(product)"></button>
+                <button pButton pRipple icon="pi pi-shopping-cart" class="p-button-success" style="margin-left: 3px;"
+                        (click)="openProductPayMoodal(product)"></button>
             </td>
         </tr>
     </ng-template>
@@ -137,6 +141,45 @@
 
         <ng-template pTemplate="footer">
             <p-button icon="pi pi-save" (click)="saveProduct()" label="შენახვა"></p-button>
+        </ng-template>
+    </p-panel>
+</p-dialog>
+
+<p-dialog header="{{curProduct?curProduct.name:' '}}" [(visible)]="displayProductPayModal" [modal]="true"
+          [style]="{width: '600px'}"
+          [draggable]="false" [resizable]="false">
+    <p-blockUI [target]="pnl" [blocked]="blockedPanel">
+        <i class="pi pi-lock" style="font-size: 3rem"></i>
+    </p-blockUI>
+    <p-panel #pnl [showHeader]="false">
+        <form [formGroup]="productPayForm" style="width: 100%">
+            <div class="p-col-12 p-md-12">
+                <div class="card">
+                    <div class="p-fluid">
+                        <div class="p-field p-grid">
+                            <label class="p-col-12 p-mb-4 p-md-4 p-mb-md-0">რაოდენობა</label>
+                            <div class="p-col-12 p-md-8">
+                                <p-inputNumber
+                                    [max]="curProduct?.quantity"
+                                    [min]="1"
+                                    formControlName="quantity">
+                                </p-inputNumber>
+                            </div>
+                        </div>
+                        <div class="p-field p-grid">
+                            <label class="p-col-12 p-mb-4 p-md-4 p-mb-md-0">ბარათის მონაცემები</label>
+                            <div class="p-col-12 p-md-8">
+                                <input type="text" pInputText formControlName="cardInfo"
+                                       (blur)="checkValidity(productAddForm);">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <ng-template pTemplate="footer">
+            <p-button icon="pi pi-save" (click)="buyProduct()" label="ყიდვა"></p-button>
         </ng-template>
     </p-panel>
 </p-dialog>

@@ -46,11 +46,11 @@ export class ApiService {
     // PRODUCT
 
     saveProduct(request): Observable<any> {
-        return this.http.post(`/demo-java/rest/api/product/save-product`, request);
-    }
-
-    updateProduct(request): Observable<any> {
-        return this.http.post(`/demo-java/rest/api/product/update-product`, request);
+        if (!request.id) {
+            return this.http.post(`/demo-java/rest/api/product/save-product`, request);
+        } else {
+            return this.http.put(`/demo-java/rest/api/product/update-product`, request);
+        }
     }
 
     searchProducts(request): Observable<any> {

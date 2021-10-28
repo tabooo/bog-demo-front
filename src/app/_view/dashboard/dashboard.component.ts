@@ -29,10 +29,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     searchForm: FormGroup;
     curProduct: ProductDto;
+
     displayProductModal = false;
     productAddForm: FormGroup;
     blockedPanel = false;
     uploadedFiles = [];
+
+    displayProductPayModal = false;
+    productPayForm: FormGroup;
 
     constructor(private apiService: ApiService,
                 private fb: FormBuilder,
@@ -54,6 +58,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             quantity: new FormControl(),
             price: new FormControl(),
             photo: new FormControl(),
+        });
+
+        this.productPayForm = this.fb.group({
+            quantity: new FormControl(),
+            cardInfo: new FormControl(),
         });
 
         this.activatedRoute.queryParams.subscribe(params => {
@@ -113,7 +122,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             this.productAddForm.reset();
             this.displayProductModal = true;
         } else {
-
+            this.curProduct = product;
+            this.productAddForm.patchValue({
+                name: product.name,
+                quantity: product.quantity,
+                price: product.price,
+            });
+            if (product.file) {
+                this.uploadedFiles.push(product.file);
+            }
+            this.displayProductModal = true;
         }
     }
 
@@ -181,10 +199,22 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             } else {
                 this.globalService.showError(response.description);
             }
+        }, error => {
+            this.blockedPanel = false;
+            this.globalService.showError(error.error.message);
         });
     }
 
     getFile(fileId): SafeUrl {
         return this.apiService.getFile(fileId);
+    }
+
+    openProductPayMoodal(product: any) {
+        this.curProduct = product;
+        this.displayProductPayModal = true;
+    }
+
+    buyProduct() {
+
     }
 }
