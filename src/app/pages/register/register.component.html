@@ -1,0 +1,65 @@
+<p-blockUI [target]="pnl" [blocked]="blockedPanel">
+    <i class="pi pi-lock" style="font-size: 3rem"></i>
+</p-blockUI>
+<p-panel #pnl>
+    <div class="login-body">
+        <div class="login-topbar">
+        </div>
+
+        <div class="login-panel p-fluid" style="margin-left: auto; margin-right: auto; padding-top: 70px;">
+            <div class="p-grid">
+                <div class="p-col-12 p-lg-12 p-md-12 logo-container p-text-center">
+                    <span class="login-summary">რეგისტრაცია</span>
+                </div>
+                <ng-template [ngIf]="!registered">
+                    <form [formGroup]="registerForm" style="width: 100%; margin: 5px">
+                        <div class="p-col-12 p-lg-12 p-md-12">
+                            <div class="input-wrapper p-text-center">
+                                <label>ელ. ფოსტა</label>
+                                <input type="text" autocomplete="off" pInputText
+                                       formControlName="email">
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-lg-12 p-md-12">
+                            <div class="input-wrapper p-text-center">
+                                <label>სახელი</label>
+                                <input type="text" autocomplete="off" pInputText
+                                       formControlName="firstName">
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-lg-12 p-md-12">
+                            <div class="input-wrapper p-text-center">
+                                <label>გვარი</label>
+                                <input type="text" autocomplete="off" pInputText
+                                       formControlName="lastName">
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-lg-12 p-md-12">
+                            <div class="input-wrapper p-text-center">
+                                <label>პირადი ნომერი</label>
+                                <input type="text" autocomplete="off" pInputText
+                                       formControlName="personalNo">
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-lg-12 p-md-12">
+                            <div class="input-wrapper p-text-center">
+                                <label>ანგარიშის ნომერი</label>
+                                <input type="text" autocomplete="off" pInputText
+                                       formControlName="accountNumber">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="p-col-12 p-lg-12 p-md-12 button-container p-text-center">
+                        <button type="button" pButton label="რეგისტრაცია" (click)="register()"></button>
+                    </div>
+                </ng-template>
+                <ng-template [ngIf]="registered">
+                    <div class="p-col-12 p-lg-12 p-md-12">
+                        მითითებულ ელ. ფოსტაზე გამოგეგზავნათ ვერიფიკაციის ლინკი.
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</p-panel>
+<p-toast key="toastError" [baseZIndex]="20000" [position]="'bottom-center'"></p-toast>

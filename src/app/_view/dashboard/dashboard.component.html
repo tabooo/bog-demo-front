@@ -1,0 +1,142 @@
+<h3 class="first">პროდუქტები</h3>
+<form [formGroup]="searchForm" (ngSubmit)="search(null, null)" style="width: 100%; margin: 5px">
+    <div class="card">
+        <div class="p-fluid p-grid p-formgrid">
+            <div class="p-field p-col-12 p-md-4">
+                <label for="float-input-firstName">სახელი</label>
+                <input pInputText id="float-input-firstName" type="text"
+                       formControlName="name"
+                       (keydown.enter)='search(null, null)'>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="ui-g" style="margin: 5px">
+    <div class="ui-g-12" style="text-align: center">
+        <button pButton type="button" icon="pi pi-search" class="ui-button-info"
+                label="ძებნა"
+                (click)="search(null, null)"></button>
+        <button pButton type="button" class="ui-button-danger"
+                label="გასუფთავება"
+                style="margin-left: 3px;"
+                (click)="searchForm.reset()"></button>
+    </div>
+</div>
+
+<div class="ui-g" style="margin: 5px">
+    <div class="ui-g-12" style="text-align: left">
+        <button pButton type="button" icon="pi pi-plus-circle" class="ui-button-info"
+                label="პროდუცქტის დამატება"
+                (click)="openProductMoodal(null)"
+                *ngIf="user"></button>
+    </div>
+</div>
+
+<p-table #table
+         styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines"
+         [responsive]="true"
+         [value]="products.products"
+         [lazy]="true"
+         (onLazyLoad)="search($event, null)"
+         [lazyLoadOnInit]="false"
+         [totalRecords]="products.count"
+         [customSort]="true"
+         [paginator]="true"
+         [rows]="searchRequest.limit"
+         [showCurrentPageReport]="true"
+         currentPageReportTemplate="სულ {totalRecords} ჩანაწერი">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="text-align: center">სურათი</th>
+            <th style="text-align: center">სახელი</th>
+            <th style="text-align: center">რაოდენობა</th>
+            <th style="text-align: center">ფასი</th>
+            <th width="50"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr>
+            <td style="text-align: center">
+                <img [src]="product.file?getFile(product.file.id):''" width="100"/>
+            </td>
+            <td style="text-align: center">{{product.name}}</td>
+            <td style="text-align: center">{{product.quantity}}</td>
+            <td style="text-align: center">{{product.price}}</td>
+            <td>
+                <p-button icon="pi pi-eye" (click)="openProductMoodal(product)"></p-button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+
+<p-dialog header="{{curProduct?curProduct.name:' '}}" [(visible)]="displayProductModal" [modal]="true"
+          [style]="{width: '600px'}"
+          [draggable]="false" [resizable]="false">
+    <p-blockUI [target]="pnl" [blocked]="blockedPanel">
+        <i class="pi pi-lock" style="font-size: 3rem"></i>
+    </p-blockUI>
+    <p-panel #pnl [showHeader]="false">
+        <form [formGroup]="productAddForm" style="width: 100%">
+            <div class="p-col-12 p-md-12">
+                <div class="card">
+                    <div class="p-fluid">
+                        <div class="p-field p-grid">
+                            <label class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">სურათი</label>
+                            <div class="p-col-12 p-md-10">
+                                <p-fileUpload
+                                    #fileUploadButton
+                                    chooseLabel="ატვირთვა"
+                                    name="file"
+                                    customUpload="true"
+                                    [accept]="'image/*'"
+                                    [auto]="true"
+                                    [disabled]="uploadedFiles.length>0"
+                                    (uploadHandler)="uploadFile($event, fileUploadButton)">
+                                    <ng-template pTemplate="content">
+                                        <ul *ngIf="uploadedFiles.length>0">
+                                            <li *ngFor="let file of uploadedFiles">
+                                                {{file.name}}
+                                                <button pButton pRipple icon="pi pi-trash" class="p-button-danger"
+                                                        style="margin-left: 3px; width: 40px;"
+                                                        (click)="removeDebtBillingFile(file)"></button>
+                                            </li>
+                                        </ul>
+                                    </ng-template>
+                                </p-fileUpload>
+                            </div>
+                        </div>
+                        <div class="p-field p-grid">
+                            <label class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">სახელი</label>
+                            <div class="p-col-12 p-md-10">
+                                <input type="text" pInputText formControlName="name"
+                                       (blur)="checkValidity(productAddForm);">
+                            </div>
+                        </div>
+                        <div class="p-field p-grid">
+                            <label class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">რაოდენობა</label>
+                            <div class="p-col-12 p-md-10">
+                                <input type="text" pInputText formControlName="quantity"
+                                       (blur)="checkValidity(productAddForm);">
+                            </div>
+                        </div>
+                        <div class="p-field p-grid">
+                            <label class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">ფასი</label>
+                            <div class="p-col-12 p-md-10">
+                                <input type="text" pInputText formControlName="price"
+                                       (blur)="checkValidity(productAddForm);"
+                                       maxlength="11"
+                                       minLength="11">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <ng-template pTemplate="footer">
+            <p-button icon="pi pi-save" (click)="saveProduct()" label="შენახვა"></p-button>
+        </ng-template>
+    </p-panel>
+</p-dialog>

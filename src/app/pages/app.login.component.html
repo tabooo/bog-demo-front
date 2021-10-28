@@ -1,0 +1,47 @@
+<div class="login-body">
+    <div class="login-topbar">
+    </div>
+
+    <div class="login-panel p-fluid" style="margin-left: auto; margin-right: auto; padding-top: 70px;">
+        <div class="p-grid">
+            <div class="p-col-12 p-lg-12 p-md-12 logo-container p-text-center">
+                <span class="login-summary">ავტორიზაცია</span>
+                <div class="login-detail">
+                    <span>თუ არ გაქვთ ანგარიში დარეგისტრირდით
+                        <a href="javascript: void(0)" (click)="router.navigate(['/register'])">
+                            ამ გვერდზე
+                        </a></span>
+                </div>
+            </div>
+            <div class="p-col-12 p-lg-12 p-md-12">
+                <div class="input-wrapper p-text-center">
+                    <label>მომხმარებელი</label>
+                    <input type="text" autocomplete="off" pInputText
+                           [(ngModel)]="username"
+                           (keyup.enter)="login()"
+                           name="username">
+                </div>
+            </div>
+            <div class="p-col-12 p-lg-12 p-md-12">
+                <div class="input-wrapper p-text-center">
+                    <label>პაროლი</label>
+                    <input type="password" autocomplete="off" placeholder="" pInputText
+                           [(ngModel)]="password"
+                           (keyup.enter)="login()"
+                           name="password">
+                </div>
+            </div>
+            <div class="p-col-12 p-lg-12 p-md-12 chkbox-container">
+                <div class="remember-me">
+<!--                    <input type="checkbox" class="p-chkbox p-chkbox-box">-->
+<!--                    <span>დამიმახსოვრე</span>-->
+                    <a href="#">პაროლის აღდგენა</a>
+                </div>
+            </div>
+            <div class="p-col-12 p-lg-12 p-md-12 button-container p-text-center">
+                <button type="button" pButton label="შესვლა" (click)="login()"></button>
+            </div>
+        </div>
+    </div>
+</div>
+<p-toast key="toastError" [baseZIndex]="20000" [position]="'bottom-center'"></p-toast>

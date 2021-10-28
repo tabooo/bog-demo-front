@@ -1,0 +1,32 @@
+<p-blockUI [target]="pnl" [blocked]="blockedPanel">
+    <i class="pi pi-lock" style="font-size: 3rem"></i>
+</p-blockUI>
+<p-panel #pnl>
+    <div class="login-body">
+        <div class="login-topbar">
+        </div>
+
+        <div class="login-panel p-fluid" style="margin-left: auto; margin-right: auto; padding-top: 70px;">
+            <div class="p-grid">
+                <ng-template [ngIf]="valid">
+                    <div class="p-col-12 p-lg-12 p-md-12">
+                        <div class="input-wrapper p-text-center">
+                            <label>პაროლი</label>
+                            <input type="text" autocomplete="off" pInputText
+                                   [(ngModel)]="password">
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-lg-12 p-md-12 button-container p-text-center">
+                        <button type="button" pButton label="აქტივაცია" (click)="setPassword()"></button>
+                    </div>
+                </ng-template>
+                <ng-template [ngIf]="!valid">
+                    <div class="p-col-12 p-lg-12 p-md-12 p-text-center">
+                        {{msg}}
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</p-panel>
+<p-toast key="toastError" [baseZIndex]="20000" [position]="'bottom-center'"></p-toast>
