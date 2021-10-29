@@ -57,6 +57,10 @@ export class ApiService {
         return this.http.get(`/demo-java/rest/api/product/search`, {params: request});
     }
 
+    buyProduct(request): Observable<any> {
+        return this.http.post(`/demo-java/rest/api/product/buy-product`, request);
+    }
+
     // FILE
 
     fileUpload(request): Observable<any> {

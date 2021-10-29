@@ -209,12 +209,29 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         return this.apiService.getFile(fileId);
     }
 
-    openProductPayMoodal(product: any) {
+    openProductPayModal(product: any) {
         this.curProduct = product;
         this.displayProductPayModal = true;
     }
 
     buyProduct() {
+        this.blockedPanel = true;
+        const formValues = this.productPayForm.getRawValue();
 
+        const request = {
+            productId: this.curProduct.id,
+            quantity: formValues.quantity,
+            cardInfo: formValues.cardInfo
+        };
+
+        this.apiService.buyProduct(request).subscribe(response => {
+            this.blockedPanel = false;
+            if (response.valid) {
+                this.displayProductPayModal = false;
+                this.search(null, null);
+            } else {
+                this.globalService.showError(response.description);
+            }
+        });
     }
 }
