@@ -65,7 +65,7 @@
             <td style="text-align: center">{{product.price}}</td>
             <td>
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-warning" style="margin-left: 3px;"
-                        *ngIf="product.userId==user.id"
+                        *ngIf="user && product.userId==user.id"
                         (click)="openProductMoodal(product)"></button>
                 <button pButton pRipple icon="pi pi-shopping-cart" class="p-button-success" style="margin-left: 3px;"
                         (click)="openProductPayModal(product)"></button>

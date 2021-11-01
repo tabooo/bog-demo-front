@@ -97,6 +97,12 @@ export class AuthenticationService {
         this.apiService.getSessionData().subscribe(response => {
             if (response) {
             }
+        }, error => {
+            if (error.status === 403) {
+                this.userSubject.next(null);
+                localStorage.removeItem(this.LOCAL_STORAGE_KEY);
+                localStorage.clear();
+            }
         });
     }
 }

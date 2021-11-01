@@ -38,19 +38,18 @@ export class HttpInterceptorService implements HttpInterceptor {
                             break;
                         case 403:
                             // this.authenticationService.logout2();
-                            return;
                             break;
                         case 500:
                             // this.notifier.showError('Server Error');
                             break;
                     }
 
-                    this.messageService.add({
+                    /*this.messageService.add({
                         severity: 'error',
                         summary: 'დაფიქსირდა შეცდომა',
                         detail: errorMessage,
                         key: 'toastError'
-                    });
+                    });*/
                     return throwError(error);
                 })
             );

@@ -12,7 +12,6 @@ export class AppLoginComponent {
 
     constructor(private authenticationService: AuthenticationService,
                 public router: Router) {
-        console.log("aaaaaaaaaaaaaaaa")
     }
 
     login() {
